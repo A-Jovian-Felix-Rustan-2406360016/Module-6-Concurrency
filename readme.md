@@ -20,3 +20,10 @@ Commit 3 Reflection Notes :
 
 
 ![Commit 3 screen capture](/assets/images/commit3.png)
+
+
+
+
+
+
+Commit 4 Reflection Notes : 
