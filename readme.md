@@ -31,7 +31,7 @@ Jadi kesimpulannya, server akan menerima suatu request, kemudian mengambil file 
 Commit 3 Reflection Notes : 
 Pada tahap ini, saya mempelajari cara server memvalidasi request yang masuk dan melakukan refactoring struktur kode agar lebih optimal. 
 
-- Pemisahan Respons : Sebelumnya server selalu mengirimkan file hello.html untuk semua request yang diminta client. Sekarang, kode tersebut menerapkan logika if else untuk memeriksa baris pertama request. Jika browser meminta path / (GET / HTTP/1.1), maka server akan merespons dengan status 200 OK dan menampilkan halaman hello.html. Lalu, jika browser meminta path lain, server akan langsung masuk ke blok else dimana akan mengirim status 404 NOT FOUND dan menampilkan 404.html. Pemisahan ini penting karena dalam aplikasi nyata, server harus membedakan berbagai routing sehingga dapat memberikan umpan balik yang tepat kepada pengguna.
+- Pemisahan Respons : Sebelumnya server selalu mengirimkan file hello.html untuk semua request yang diminta client. Sekarang, kode tersebut menerapkan logika if else untuk memeriksa baris pertama request. Jika browser meminta path '/' (GET / HTTP/1.1), maka server akan merespons dengan status 200 OK dan menampilkan halaman hello.html. Lalu, jika browser meminta path lain, server akan langsung masuk ke blok else dimana akan mengirim status 404 NOT FOUND dan menampilkan 404.html. Pemisahan ini penting karena dalam aplikasi nyata, server harus membedakan berbagai routing sehingga dapat memberikan umpan balik yang tepat kepada pengguna.
 
 - Refactoring : Awalnya, kode di dalam if dan else memiliki banyak duplikasi seperti pembacaan data, perhitungan length sampai proses pengiriman. Hal ini membuat kode menjadi panjang dan sulit dikelola jika terjadi perubahan di kemudian hari. Beberapa alasan detailnya : 
     1. Melanggar prinsip DRY : Dengan memisahkan bagian yang berbeda ke dalam blok if else, kita berhasil menghilangkan duplikasi logika.
@@ -54,7 +54,7 @@ Pada tahap ini, saya mempelajari cara server memvalidasi request yang masuk dan 
 
 
 Commit 4 Reflection Notes : 
-
+Pada tahap ini, saya mempelajari keterbatasan utama dari server yang sudah dibuat tadi karena hanya mengandalkan satu thread untuk berjalan (single thread). Dalam kode ini, kita diperlihatkan dengan fenomena blocking pada single thread melalui suatu simulasi menggunakan thread::sleep(Duration::from_secs(10)). Karena server bersifat single thread, maka ia hanya bisa mengerjakan satu tugas pada satu waktu. Hal ini disimulasikan ketika pengguna akses '/sleep', maka seluruh server akan blocked selama 10 detik. Selama masa tunggu tersebut, server tidak bisa menerima permintaan lain, bahkan untuk rute biasa seperti '/'.
 
 
 
