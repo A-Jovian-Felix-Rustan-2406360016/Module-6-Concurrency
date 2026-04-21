@@ -60,7 +60,9 @@ Pada tahap ini, saya mempelajari keterbatasan utama dari server yang sudah dibua
 
 
 Commit 5 Reflection Notes : 
+Pada tahap ini, kita mengubah server dari single thread menjadi multithread. Sebelumnya, server hanya dapat menangani satu request dalam satu waktu sehingga request lain harus menunggu hingga proses sebelumnya selesai. Setelah menggunakan ThreadPool, server dapat menangani beberapa request secara paralel. ThreadPool bekerja dengan membuat sejumlah worker thread di awal, kemudian setiap request yang masuk dikirim sebagai job ke dalam antrian menggunakan channel. Job tersebut berupa closure yang berisi pemanggilan fungsi handle_connection(). Worker thread akan mengambil job dari channel dan mengeksekusinya sehingga beberapa request dapat berjalan bersamaan tanpa harus membuat thread baru setiap ada koneksi. 
 
+Mekanisme komunikasi antar thread menggunakan channel (mpsc), dimana satu sender digunakan untuk mengirim job dan beberapa worker dapat berbagi receiver yang dibungkus dengan Arc dan Mutex. Arc digunakan agar data dapat dimiliki oleh banyak thread, sedangkan Mutex untuk memastikan hanya satu thread yang mengakses receiver pada satu waktu untuk menghindari race condition. Setiap worker berjalan dalam loop yang terus menunggu job baru, mengambil dari antrian, dan kemudian menjalankannya.
 
 
 
