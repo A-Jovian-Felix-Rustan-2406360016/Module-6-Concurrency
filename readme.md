@@ -13,8 +13,14 @@ Kode tersebut mencoba membangun sebuah server TCP dasar untuk mendengarkan konek
 - println! : cetak isi dari HTTP request yang telah dibaca tersebut ke terminal sehingga kita dapat melihat metadata apa saja yang dikirimkan browser.
 
 Commit 2 Reflection Notes : 
+Pada tahap ini, kita mengubah kode yang tadinya hanya mendengarkan menjadi merespons. Sekarang fungsi handle_connection tidak hanya membaca, tetapi juga bisa respon. Berikut adalah penjelasan perubahannya :
+- status_line = "HTTP/1.1 200 OK" : Mendefinisikan status line yang berarti berhasil ke browser.
+- contents = fs::read_to_string("hello.html").unwrap() : Menggunakan modul file system untuk membuka file hello.html dan membaca semua teks tersebut ke variabel contents.
+- length = contents.len() : Menghitung panjang dari content yang dibaca tadi
+- let response = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}") : Merakit respons yang nantinya akan dikirimkan. status_line memakai respons berhasil tadi, \r\n untuk karakter khusus pindah baris, Content-Length sebagai header untuk ukuran data yang dikirimkan, \r\n\r\n untuk dua kali pindah baris sebagai tanda pemisah mutlak antara header dan body. Contents untuk isi dari file HTML 
+- stream.write_all(response.as_bytes()).unwrap() : Terakhir, data yang sudah dirakit tadi dikirimkan dengan format kumpulan bytes dan dikirim melalui TCP stream menuju browser pengguna.
 
-
+Jadi kesimpulannya, server akan menerima suatu request, kemudian mengambil file html yang diminta, lalu membungkus isi file tersebut dan akhirnya mengirimkan kembali ke browser dalam bentuk bytes melalui koneksi TCP.
 
 
 ![Commit 2 screen capture](/assets/images/commit2.png)
