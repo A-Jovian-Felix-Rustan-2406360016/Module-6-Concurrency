@@ -67,3 +67,6 @@ Mekanisme komunikasi antar thread menggunakan channel (mpsc), dimana satu sender
 
 
 Commit Bonus Reflection Notes : 
+Pada bonus ini, saya mengubah cara pembuatan ThreadPool dari menggunakan new menjadi build. Sebelumnya, fungsi new menggunakan assert! untuk memastikan ukuran thread pool lebih dari nol, jika terjadi kesalahan seperti ukuran bernilai nol, program akan langsung panic dan berhenti. Pendekatan ini kurang fleksibel karena tidak memberikan kesempatan untuk menangani error dengan lebih baik.
+
+Dengan menggunakan fungsi build, saya mengubah pendekatan tersebut agar mengembalikan Result. Jika ukuran thread pool tidak valid, fungsi akan mengembalikan Err daripada menghentikan program. Hal ini memungkinkan pemanggil fungsi untuk menangani error dengan lebih aman, misalnya dengan menggunakan unwrap, expect, atau mekanisme error handling lainnya sesuai kebutuhan.
